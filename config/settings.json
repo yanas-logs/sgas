@@ -1,0 +1,13 @@
+{
+    "processor": {
+        "max_tokens": 5000,
+        "security_policy": "strict"
+    },
+    "analyst": {
+        "model_name": "gemini-2.0-flash",
+        "temperature": 0.2
+    },
+    "mcp": {
+        "port": 8080
+    }
+}
