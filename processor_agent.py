@@ -4,14 +4,10 @@ import docx
 import re
 import logging
 from typing import Dict, Any
+from utils.config_loader import config
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger("ProcessorAgent")
-
-def load_config():
-    with open('config/settings.json', 'r') as f:
-        return json.load(f)
-config = load_config()
 
 class ProcessorAgent:
     """
@@ -20,8 +16,9 @@ class ProcessorAgent:
     """
 
     def __init__(self, security_policy: str = "strict"):
+        self.config = config.get("processor", {}).get("max_tokens", 5000)
         self.security_policy = security_policy
-        logger.info("ProcessorAgent initialized with %s policy.", security_policy)
+        logger.info("ProcessorAgent initialized with %s     policy.", security_policy)
 
     def sanitize_input(self, text: str) -> str:
         """
@@ -64,7 +61,7 @@ class ProcessorAgent:
 
             return {
                 "status": "success",
-                "content": clean_text[:5000],
+                "content": clean_text[:self.max_tokens],
                 "metadata": {
                     "source": file_path,
                     "length": len(clean_text),
